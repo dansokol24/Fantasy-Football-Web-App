@@ -1,0 +1,100 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
+<br>
+{% for item in teams %}
+  {% if item.owner_name == user.account_username %}
+  <div class="border border-2">
+    <h1 align = "center">Team {{ item.team_name }}</h1>
+    <h3 align = "center">Record: {{ item.team_record }}</h3>
+    <ul class="list-group list-group-flush" id="my_players">
+      {% for player in players %}
+      {% if player.player_team == item.team_name %}
+      <li class="list-group-item" align = "center">
+        <div class="font-weight-bold">{{ player.player_name }}</div><br>Position: {{ player.player_position }}&emsp;&emsp;Position Rank: {{ player.player_rank }}&emsp;Status: {{ player.player_status }}
+      </li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endfor %}
+
+<br>
+<form method="POST">
+  <textarea name="dropped_player" id="dropped_player" class="form-control">Enter player you want to drop</textarea>
+  <br />
+  <div align="center">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
+<br>
+<br>
+
+<div class="d-flex flex-wrap align-content-center">
+{% for item in teams %}
+
+  {% if item.owner_name != user.account_username and item.owner_name != "admin" %}
+  <div class="col-6 border border-2">
+    <br>
+      <h1 align = "center">Team {{ item.team_name }}</h1>
+      <h3 align = "center">Record: {{ item.team_record }}</h3>
+      <ul class="list-group list-group-flush" id="team">
+        {% for player in players %}
+        {% if player.player_team == item.team_name %}
+        <li class="list-group-item" align = "center">
+          <div class="font-weight-bold">{{ player.player_name }}</div><br>Position: {{ player.player_position }}&emsp;&emsp;Position Rank: {{ player.player_rank }}&emsp;Status: {{ player.player_status }}
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+  </div>
+  <br>
+  {% endif %}
+{% endfor %}
+</div>
+
+<br>
+<br>
+<br>
+
+{% for item in teams %}
+  {% if item.owner_name == "admin" %}
+  <div class="border border-2">
+    <h1 align = "center">Free Agents</h1>
+    <ul class="list-group list-group-flush" id="team_players">
+      {% for player in players %}
+      {% if player.player_team == "free_agent" %}
+      <li class="list-group-item" align = "center">
+        <div class="font-weight-bold">{{ player.player_name }}</div><br>Position: {{ player.player_position }}&emsp;&emsp;Position Rank: {{ player.player_rank }}&emsp;Status: {{ player.player_status }}
+      </li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endfor %}
+
+<br>
+<form method="POST">
+  <textarea name="added_player" id="added_player" class="form-control">Enter player you want to add</textarea>
+  <br />
+  <div align="center">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
+<br>
+
+<br>
+<br>
+<div>
+  <h1 align="center">Matchups</h1>
+  <br>
+  {% for game in games %}
+  <ul class="list-group list-group-flush" id="games">
+    <li class="list-group-item" align = "center">
+      <h2>{{ game.team_a_name }} vs {{ game.team_b_name }}</h2><br><h3>{{ game.team_a_score }} to {{ game.team_b_score }}</h3>
+    </li>
+  </ul>
+  {% endfor %}
+</div>
+
+
+{% endblock %}
